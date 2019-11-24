@@ -1,6 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    Script: GameManager
+    Author: Gareth Lockett
+    Version: 1.0
+    Description:    Base game manager class that all other game manager types inherit from.
+                    Handles game state.
+                    Handles player registration (eg makes player character easily accessable via static GetPlayer() method)
+                    Manages end game via GameEnded() delegate.
+*/
+
 public abstract class GameManager : MonoBehaviour
 {
     // Events
