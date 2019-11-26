@@ -50,27 +50,22 @@ public class EnemyControllerChaser : EnemyController
     private void OnDisable()
     {
         if( this.navMeshAgent != null ){ this.navMeshAgent.ResetPath(); }
-        // this.navMeshAgent.enabled = false;
     }
 
     private void Update()
     {
-        // Check if dying/dead (eg disable NavMeshAgent)
-        // if( this.characterState == CharacterState._dying || this.characterState == CharacterState._dead && this.navMeshAgent.enabled == true )
-        // {
-           
-        //     return;
-        // }
-
         // Do the current state of this enemy.
         switch( this.state )
         {
             case EnemyControllerState._idle:
                 // Check if been idle long enough
-                if( Time.time >= this.exitIdleTime ){ this.state = EnemyControllerState._waypoints; }
+                if( Time.time >= this.exitIdleTime ){ this.state = EnemyControllerState._waypoints; break; }
 
                 // Shouldn't have a target object if not chasing.
                 this.targetObject = null;
+
+                // Shouldn't have a path if idle.
+                this.navMeshAgent.ResetPath();
                 break;
 
             case EnemyControllerState._waypoints:
@@ -81,7 +76,6 @@ public class EnemyControllerChaser : EnemyController
                     this.waypoints.RemoveAll( item => item == null );
 
                     if( this.waypoints.Count > 0 )
-                        // { this.SetTarget( this.waypoints[ Random.Range( 0, this.waypoints.Count ) ].position ); }
                         { this.navMeshAgent.SetDestination( this.waypoints[ Random.Range( 0, this.waypoints.Count ) ].position ); }
                     else
                     {
@@ -110,7 +104,11 @@ public class EnemyControllerChaser : EnemyController
         this.targetObject = targetGameObject;
 
         // Check if there is a target object.
-        if( this.targetObject == null ){ return; }
+        if( this.targetObject == null )
+        {
+            if( this.state == EnemyControllerState._chase ){ this.state = EnemyControllerState._idle; } // Stop chasing if no target.
+            return;
+        }
 
         // Start chasing.
         this.state = EnemyControllerState._chase;

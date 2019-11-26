@@ -29,6 +29,10 @@ public class FollowCamColliders : MonoBehaviour
 
     private void Update()
     {
+        // Sanity checks.
+        if( this.followCam == null ){ return; }
+        if( this.followCam.targetObj == null ){ return; }
+
         // Check for collisions between the target object and follow camera.
         RaycastHit hit;
         Vector3 vecFromTargetToFollowCam = this.followCam.transform.position - this.followCam.targetObj.transform.position;

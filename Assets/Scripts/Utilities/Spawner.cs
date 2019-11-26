@@ -62,7 +62,10 @@ public class Spawner : MonoBehaviour
         }
 
         // Instantiate the object at this spawner location/orientation.
-        GameObject go = GameObject.Instantiate( this.objectsToSpawn[ id ], this.transform.position, this.transform.rotation );
+        GameObject newGameObject = GameObject.Instantiate( this.objectsToSpawn[ id ], this.transform.position, this.transform.rotation );
+
+        // Fix Unity's stupid name change (eg "(Clone)")
+        newGameObject.name = newGameObject.name.Replace( "(Clone)", "" );
 
         // If set, remove the spawned id from the object list.
         if( this.removeWhenSpawned == true ){ this.objectsToSpawn.RemoveAt( id ); }
@@ -70,6 +73,6 @@ public class Spawner : MonoBehaviour
         // Set the last spawn time.
         this.lastSpawnTime = Time.time;
 
-Debug.Log( "Spawner instantiated an object: " +go.name +"  ["+this.spawnType+"]", go );
+// Debug.Log( "Spawner instantiated an object: " +go.name +"  ["+this.spawnType+"]", go );
     }
 }

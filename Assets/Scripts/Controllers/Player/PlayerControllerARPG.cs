@@ -37,7 +37,7 @@ public class PlayerControllerARPG : CharacterController
         // Get a reference to the NavMeshAgent on this game object.
         this.navMeshAgent = this.GetComponent<NavMeshAgent>();
         this.navMeshAgent.speed = this.moveSpeed;
-    }
+   }
 
     private void OnDisable()
     {
@@ -46,6 +46,19 @@ public class PlayerControllerARPG : CharacterController
 
     private void Update()
     {
+        // Check if reached destination. Must do this before setting a new path below.
+        if( this.navMeshAgent.hasPath == true )
+        {
+            if( Vector3.Distance( this.navMeshAgent.transform.position, this.navMeshAgent.destination ) <= this.navMeshAgent.radius )
+            {
+                // Has just arrived at destination.
+                // Debug.Log( "Arrived at destination" );
+
+                // Clear the path once arrived at destination.
+                this.navMeshAgent.ResetPath();
+            }
+        }
+
         // Check for a left mouse click (0)
         if( Input.GetMouseButton( 0 ) == true )
         {
@@ -65,7 +78,6 @@ public class PlayerControllerARPG : CharacterController
                 if( this.groundLayers.value == ( this.groundLayers.value | ( 1 << hit.collider.gameObject.layer ) ) )
                 {
                     // Set the navMeshAgent destination to the hit point.
-                    //this.navMeshAgent.SetDestination( hit.point );
                     this.SetNavMeshAgentDestination( hit.point );
                 }
                 else
@@ -74,11 +86,9 @@ public class PlayerControllerARPG : CharacterController
                     Debug.Log( "Something other than the ground was clicked! " +hit.collider.gameObject.name );
                     if( this.objectClicked != null ){ this.objectClicked( hit.collider.gameObject ); }
                 }
-
-                // // Set the navMeshAgent destination to the hit point.
-                // this.navMeshAgent.SetDestination( hit.point );
             }
         }
+
     }
 
     public void SetNavMeshAgentDestination( Vector3 position )

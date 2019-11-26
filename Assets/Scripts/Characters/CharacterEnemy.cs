@@ -46,6 +46,14 @@ public class CharacterEnemy : Character
                 CharacterPlayer characterPlayer = GameObject.FindObjectOfType<CharacterPlayer>();
                 if( characterPlayer != null )
                 {
+                    // Check the target player is alive.
+                    if( characterPlayer.GetHealth() == 0f )
+                    {
+                        this.targetPlayer = null;
+                        this.enemyState = EnemyState._idle;
+                        break;
+                    }
+
                     // Check distance to player and target if within range.
                     if( Vector3.Distance( this.transform.position, characterPlayer.transform.position ) <= this.attackRange )
                     {
@@ -63,8 +71,17 @@ public class CharacterEnemy : Character
             case EnemyState._targetingPlayer:
                 // Check still have a valid player target.
                 if( this.targetPlayer == null ){ this.enemyState = EnemyState._idle; break; }
+                
+                // Check the target player is alive.
+                if( this.targetPlayer.GetHealth() == 0f )
+                {
+                    this.targetPlayer = null;
+                    this.enemyState = EnemyState._idle;
+                    this.controller.SetTarget( null );
+                    break;
+                }
 
-                // Make sure player still in range.
+                // Make sure target player still in range.
                 if( Vector3.Distance( this.transform.position, this.targetPlayer.transform.position ) > this.attackRange )
                 {
                     this.targetPlayer = null; // Forget player.

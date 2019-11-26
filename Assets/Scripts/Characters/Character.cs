@@ -15,13 +15,13 @@ public abstract class Character : MonoBehaviour
     public enum CharacterState{ _idle, _dying, _dead }      // <<< Add more states here.
 
     // Properties
-    public float health = 10f;                      // Amount of health the character has.
+    [ SerializeField ] private float health = 10f;          // Amount of health the character has.
 
-    public Inventory inventory;                     // This characters' inventory (Set to 'public' so designers can pre-add items to character inventory)
+    public Inventory inventory;                             // This characters' inventory (Set to 'public' so designers can pre-add items to character inventory)
 
-    protected CharacterState characterState;        // The current state of the character (eg idle, dead ...)
+    protected CharacterState characterState;                // The current state of the character (eg idle, dead ...)
 
-    public Transform itemAttachPoint;               // Reference to where items should be attached to when made active (eg hand in FPS)
+    public Transform itemAttachPoint;                       // Reference to where items should be attached to when made active (eg hand in FPS)
 
     // Methods
     private void Awake()
@@ -66,7 +66,22 @@ public abstract class Character : MonoBehaviour
 
         // Substract the damage from this characters' health.
         this.health -= amountOfDamage;
+    Debug.Log( this.name +" took damage " +amountOfDamage );
+
+        // Clamp to 0.
+        if( this.health < 0f ){ this.health = 0f; }
     }
+
+    public virtual void GainHealth( float amountOfHealth )
+    {
+        // Sanity check.
+        if( amountOfHealth < 0f ){ return; }
+
+        // Add some health to the character.
+        this.health += amountOfHealth;
+    }
+
+    public virtual float GetHealth(){ return this.health; }
 
     // Allows other scripts to check the state of this character without been able to change it.
     public CharacterState GetState(){ return this.characterState; }

@@ -40,17 +40,21 @@ public class UiCharacterHealthBar : MonoBehaviour
         this.originalHealthBarWidth = this.healthBarRT.rect.width;
 
         // Record the original character health.
-        this.originalHealth = this.character.health;
+        this.originalHealth = this.character.GetHealth();
     }
 
     private void Update()
     {
         // Sanity checks.
+        // if( this == null ){ return; }
         if( this.character == null || this.healthBar == null ){ return; }
+        if( this.originalHealth == 0f ){ this.originalHealth = 0.0000001f; } // So don't divide by zero.
 
         // Calculate the health bar width using the original width, multiplied by the original health divided by the current health.
-        float healthScaleAmount = this.originalHealth / this.character.health;
+        float healthScaleAmount = this.character.GetHealth() / this.originalHealth;
+        if( healthScaleAmount < 0f ){ healthScaleAmount = 0f; }
         float newWidth = this.originalHealthBarWidth *healthScaleAmount;
+        if( newWidth < 0f ){ newWidth = 0f; }
 
         // Animate the health bar width to the newly calculated width.
         this.healthBarRT.SetSizeWithCurrentAnchors( RectTransform.Axis.Horizontal, newWidth );

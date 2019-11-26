@@ -19,8 +19,8 @@ public abstract class ItemWeapon : Item
     protected virtual void Start()
     {
         // Auto add a collider (BoxCollider) so can trigger characters to pick it up.
-        BoxCollider boxCollider = this.gameObject.AddComponent<BoxCollider>();
-        boxCollider.isTrigger = true;
+        // BoxCollider boxCollider = this.gameObject.AddComponent<BoxCollider>();
+        // boxCollider.isTrigger = true;
 
         // Try and get an existing audio source.
         this.audioFxSource = this.GetComponent<AudioSource>();

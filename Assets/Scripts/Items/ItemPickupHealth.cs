@@ -27,7 +27,7 @@ public class ItemPickupHealth : ItemPickup
         // Check if player pick up.
         if( this.playerPickup == true && characterActivating.GetComponent<CharacterPlayer>() != null )
         {
-            characterActivating.health += this.amountOfHealthToAdd; // Add player health.
+            characterActivating.GainHealth( this.amountOfHealthToAdd ); // Add player health.
             Destroy( this.gameObject ); // Destroy the item once used.
             return;
         }
@@ -35,7 +35,7 @@ public class ItemPickupHealth : ItemPickup
         // Check if enemy pick up.
         if( this.enemiesPickup == true && characterActivating.GetComponent<CharacterEnemy>() != null )
         {
-            characterActivating.health += this.amountOfHealthToAdd; // Add enemy health.
+            characterActivating.GainHealth( this.amountOfHealthToAdd ); // Add player health.
             Destroy( this.gameObject ); // Destroy the item once used.
             return;
         }

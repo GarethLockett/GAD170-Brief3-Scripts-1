@@ -5,8 +5,10 @@
     Author: Gareth Lockett
     Version: 1.0
     Description:    Base class for all movement controllers (eg player, enemy)
+                    NOTE: All character controllers need a Rigidbody component (eg for collisions etc) Can be set to kinematic if needed.
 */
 
+[ RequireComponent( typeof( Rigidbody ) )]
 public abstract class CharacterController : MonoBehaviour
 {
     // Properties
